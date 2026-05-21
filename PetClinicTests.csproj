@@ -6,7 +6,18 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
+	<RunsettingsFilePath>Local.runsettings</RunsettingsFilePath>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Local.runsettings" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Local.runsettings">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" Version="13.3.5" />
@@ -45,6 +56,12 @@
 
   <ItemGroup>
     <Folder Include="Common\Client\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="generalCredentials.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

@@ -5,7 +5,7 @@ namespace PetClinicTests.Pages
     public abstract class BasePage
     {
         protected string END_POINT;
-
+        protected string url;
         protected IPage _page;
 
         public BasePage(IPage page) => _page = page;
@@ -14,7 +14,8 @@ namespace PetClinicTests.Pages
 
         public async Task GotoAsync()
         {
-            await _page.GotoAsync(Environment.GetEnvironmentVariable("URL") + GetEndpoint());
+            url = Environment.GetEnvironmentVariable("URL");
+            await _page.GotoAsync(url + GetEndpoint());
         }
     }
 }
