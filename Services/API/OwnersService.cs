@@ -7,15 +7,15 @@ using Task = System.Threading.Tasks.Task;
 
 namespace PetClinicTests.Services.API
 {
-    public class OwnerService : BaseService
+    public class OwnersService : BaseService
     {
         private static readonly ILogger _logger = LogManager.CreateLogger();
 
-        private static readonly string GET_OWNER = "api/Owners?id=";
-        private static readonly string POST_OWNER = "api/Owners";
-        private static readonly string DELETE_OWNER = "api/Owners?id=";
+        private static readonly string GET_OWNER = "api/owners/";
+        private static readonly string POST_OWNER = "api/owners";
+        private static readonly string DELETE_OWNER = "api/owners/";
         
-        public OwnerService(IPlaywright playwright) : base(playwright)
+        public OwnersService(IPlaywright playwright) : base(playwright)
         {
         }
 
@@ -37,8 +37,6 @@ namespace PetClinicTests.Services.API
         {
             var response = await _request.GetAsync(GET_OWNER + ownerId);
 
-            var owner = await response.JsonAsync<Owner>();
-
             _logger.Information($"Received owner with id {ownerId}.");
 
             return JsonSerializer.Deserialize<Owner>((await response.TextAsync()));
@@ -48,7 +46,7 @@ namespace PetClinicTests.Services.API
         {
             var response = await _request.DeleteAsync(DELETE_OWNER + ownerId);
 
-            _logger.Information($"Deleted owner with id {ownerId}.");
+            _logger.Information($"Owner with id {ownerId} is deleted.");
         }
     }
 }

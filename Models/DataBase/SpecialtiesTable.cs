@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PetClinicTests.Models.DataBase
 {
-    [Table("Specialties")]
+    [Table("specialties")]
     public class SpecialtiesTable
     {
         [Column("id")]

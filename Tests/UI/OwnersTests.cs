@@ -1,22 +1,26 @@
-﻿using FluentAssertions.Execution;
+﻿using FluentAssertions;
+using FluentAssertions.Execution;
+using PetClinicTests.Models.Petclinic;
 using PetClinicTests.Pages;
+using PetClinicTests.Services.API;
+using PetClinicTests.Services.DataBases;
 
 namespace PetClinicTests.Tests.UI
 {
     public class OwnersTests : BaseTest
     {
         private OwnersAddPage OwnersAddPage;
+        private OwnersDBService _ownersDBService;
+        private OwnersService _ownersService;
 
-        //private string? firstName;
-        //private string? lastName;
-        //private string? address;
-        //private string? city;
-        //private string? phone;
+        private int addedOwnerId;
 
         [SetUp]
         public async Task InitializationOwners()
         {
             OwnersAddPage = new OwnersAddPage(Page);
+            _ownersDBService = new OwnersDBService(_petClinicDBConnector);
+            _ownersService = new OwnersService(Playwright);
         }
 
         [Test]
@@ -28,13 +32,31 @@ namespace PetClinicTests.Tests.UI
             var city = "Minsk";
             var phone = "1234567890";
 
-            //Open Owners Add Page
-            await OwnersAddPage.NavigateToOwnersAddPage();
+            //Create a new owner
             await OwnersAddPage.CreateOwner(firstName, lastName, address, city, phone);
+
+            addedOwnerId = _ownersDBService.GetLastAddedOwner().Id;
+
+            var actualAddedOwner = await _ownersService.GetOwnerAsync(addedOwnerId);
 
             //Assertion
             using (new AssertionScope())
             {
+                actualAddedOwner.Should().NotBeNull();
+                actualAddedOwner.FirstName.Should().Be(firstName);
+                actualAddedOwner.LastName.Should().Be(lastName);
+                actualAddedOwner.Address.Should().Be(address);
+                actualAddedOwner.City.Should().Be(city);
+                actualAddedOwner.Telephone.Should().Be(phone);
+            }
+        }
+
+        [TearDown]
+        public async Task DeleteCreatedOwnerAfterTest()
+        {
+            if (addedOwnerId != null)
+            {
+                await _ownersService.DeleteOwnerAsync(addedOwnerId);
             }
         }
     }

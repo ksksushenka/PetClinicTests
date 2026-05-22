@@ -6,8 +6,8 @@ namespace PetClinicTests.Common.DBConnector
 {
     public class PetClinicDBConnector : DbContext
     {
-        public DbSet<OwnersTable> Owners { get; set; }
-        public DbSet<SpecialtiesTable> Specialties { get; set; }
+        public DbSet<OwnersTable> OwnersTable { get; set; }
+        public DbSet<SpecialtiesTable> SpecialtiesTable { get; set; }
 
         public PetClinicDBConnector(DbContextOptions<PetClinicDBConnector> options) : base(options)
         {

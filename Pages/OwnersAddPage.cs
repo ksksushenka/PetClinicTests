@@ -18,7 +18,7 @@ namespace PetClinicTests.Pages
         private ILocator _cityField => _page.GetByRole(AriaRole.Textbox, new() { Name = "City" });
         private ILocator _telephoneField => _page.GetByRole(AriaRole.Textbox, new() { Name = "Telephone" });
         private ILocator _backButton => _page.GetByRole(AriaRole.Button, new() { Name = "Back" });
-        private ILocator _addOwnerButton => _page.GetByRole(AriaRole.Link, new() { Name = "Add New" });
+        private ILocator _addOwnerButton => _page.GetByRole(AriaRole.Button, new() { Name = "Add Owner" });
 
         protected override string GetEndpoint()
         {
@@ -45,7 +45,6 @@ namespace PetClinicTests.Pages
             await _cityField.FillAsync(city);
             await _telephoneField.FillAsync(phone);
             await _addOwnerButton.ClickAsync();
-            await WaitService.IsElementNotVisible(_addOwnerButton);
 
             _logger.Information("Owner is created.");
         }

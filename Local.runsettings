@@ -19,8 +19,8 @@
 			<DEBUG>pw:api</DEBUG>
 			<Env>Local</Env>
 			<URL>http://localhost:4200/petclinic/</URL>
-			<PetclinicAPI>http://localhost:9966/petclinic/swagger-ui/index.html#/</PetclinicAPI>
-			<PetClinic>Host=localhost;Port=5433;Database=petclinic;user=petclinic;password=petclinic</PetClinic>
+			<PetclinicAPI>http://localhost:9966/petclinic/</PetclinicAPI>
+			<PetClinic>Host=localhost;Port=5433;Database=petclinic;username=petclinic;password=petclinic</PetClinic>
 		</EnvironmentVariables>
 	</RunConfiguration>
 	<!-- Playwright -->
