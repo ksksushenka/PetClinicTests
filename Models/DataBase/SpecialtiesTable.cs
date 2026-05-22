@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace PetClinicTests.Models.DataBase.PetClinic
+namespace PetClinicTests.Models.DataBase
 {
     [Table("Specialties")]
     public class SpecialtiesTable

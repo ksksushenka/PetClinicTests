@@ -1,9 +1,13 @@
 ﻿using Microsoft.Playwright;
+using PetClinicTests.Common.Configuration;
+using Serilog;
 
 namespace PetClinicTests.Pages
 {
     public class HomePage: BasePage
     {
+        private static readonly ILogger _logger = LogManager.CreateLogger();
+
         public HomePage(IPage page) : base(page) => END_POINT = "welcome";
 
         private ILocator _welcomeToPetclinicText => _page.GetByRole(AriaRole.Heading, new () {Name = "Welcome to Petclinic"});
@@ -13,6 +17,16 @@ namespace PetClinicTests.Pages
         protected override string GetEndpoint()
         {
             return END_POINT;
+        }
+
+        public async Task<HomePage> NavigateToHomePage()
+        {
+            await _page.GotoAsync(Environment.GetEnvironmentVariable("URL") + GetEndpoint());
+            _logger.Information($"Navigated to {Environment.GetEnvironmentVariable("URL") + GetEndpoint()}");
+
+            await _welcomeToPetclinicText.WaitForAsync();
+
+            return this;
         }
 
         public async Task GetWelcomePictureAndText()
