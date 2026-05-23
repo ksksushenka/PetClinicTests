@@ -6,8 +6,6 @@ namespace PetClinicTests.Tests
 {
     public class BaseTest : PageTest
     {
-        protected HomePage HomePage;
-
         protected PetClinicDBConnector _petClinicDBConnector;
 
         public override BrowserNewContextOptions ContextOptions()

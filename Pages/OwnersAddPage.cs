@@ -1,4 +1,5 @@
-﻿using Microsoft.Playwright;
+﻿using FluentAssertions;
+using Microsoft.Playwright;
 using PetClinicTests.Common.Configuration;
 using Serilog;
 
@@ -8,7 +9,8 @@ namespace PetClinicTests.Pages
     {
         private static readonly ILogger _logger = LogManager.CreateLogger();
 
-        public OwnersAddPage(IPage page) : base(page) => END_POINT = "owners/add";
+        public OwnersAddPage(IPage page) : base(page) { }
+        protected override string Endpoint => "owners/add";
 
         private ILocator _newOwnerText => _page.GetByRole(AriaRole.Heading, new() { Name = "New Owner" });
         private ILocator _firstNameField => _page.GetByRole(AriaRole.Textbox, new () {Name = "First Name"});
@@ -19,15 +21,10 @@ namespace PetClinicTests.Pages
         private ILocator _backButton => _page.GetByRole(AriaRole.Button, new() { Name = "Back" });
         private ILocator _addOwnerButton => _page.GetByRole(AriaRole.Button, new() { Name = "Add Owner" });
 
-        protected override string GetEndpoint()
-        {
-            return END_POINT;
-        }
-
         public async Task<OwnersAddPage> NavigateToOwnersAddPage()
         {
-            await _page.GotoAsync(Environment.GetEnvironmentVariable("URL") + GetEndpoint());
-            _logger.Information($"Navigated to {Environment.GetEnvironmentVariable("URL") + GetEndpoint()}");
+            await _page.GotoAsync(FullUrl);
+            _logger.Information($"Navigated to {FullUrl}");
 
             await _newOwnerText.WaitForAsync();
 
@@ -35,8 +32,9 @@ namespace PetClinicTests.Pages
         }
 
         // Methods
-        public async Task CreateOwner(string firstName, string lastName, string address, string city, string phone)
+        public async Task CreateNewOwner(string firstName, string lastName, string address, string city, string phone)
         {
+            await NavigateToOwnersAddPage();
             await _firstNameField.FillAsync(firstName);
             await _lastNameField.FillAsync(lastName);
             await _addressField.FillAsync(address);
@@ -45,6 +43,14 @@ namespace PetClinicTests.Pages
             await _addOwnerButton.ClickAsync();
 
             _logger.Information("Owner is created.");
+        }
+
+        public async Task IsOpen()
+        {
+            _page.Url.Should().Be(FullUrl);
+
+            var text = await _newOwnerText.TextContentAsync();
+            text.Should().Be(" New Owner ");
         }
     }
 }

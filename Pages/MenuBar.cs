@@ -8,26 +8,30 @@ namespace PetClinicTests.Pages
     {
         private static readonly ILogger _logger = LogManager.CreateLogger();
 
-        public MenuBar(IPage page) : base(page) => END_POINT = "";
+        public MenuBar(IPage page) : base(page) {}
+        protected override string Endpoint => "";
 
-        private ILocator _homeButton => _page.GetByRole(AriaRole.Link, new () {Name = "Home" });
+        private ILocator _homeLink => _page.GetByRole(AriaRole.Link, new () {Name = "Home" });
         private ILocator _ownersDropDown => _page.GetByRole(AriaRole.Button, new() {Name = "Owners"});
-        private ILocator _ownersSearchButton => _page.GetByRole(AriaRole.Link, new() { Name = "Search" });
-        private ILocator _ownersAddButton => _page.GetByRole(AriaRole.Link, new() { Name = "Add New" });
+        private ILocator _ownersSearchLink => _page.GetByRole(AriaRole.Link, new() { Name = "Search" });
+        private ILocator _ownersAddLink => _page.GetByRole(AriaRole.Link, new() { Name = "Add New" });
         private ILocator _veterinariansDropDown => _page.GetByRole(AriaRole.Button, new() {Name = "Veterinarians" });
-        private ILocator _veterinariansAllButton => _page.GetByRole(AriaRole.Link, new() { Name = "All" });
-        private ILocator _veterinariansAddButton => _page.GetByRole(AriaRole.Link, new() { Name = "Add New" });
-        private ILocator _petTypesButton => _page.GetByRole(AriaRole.Link, new() { Name = "Pet Types" });
-        private ILocator _specialtiesButton => _page.GetByRole(AriaRole.Link, new() { Name = "Specialties" });
+        private ILocator _veterinariansAllLink => _page.GetByRole(AriaRole.Link, new() { Name = "All" });
+        private ILocator _veterinariansAddLink => _page.GetByRole(AriaRole.Link, new() { Name = "Add New" });
+        private ILocator _petTypesLink => _page.GetByRole(AriaRole.Link, new() { Name = "Pet Types" });
+        private ILocator _specialtiesLink => _page.GetByRole(AriaRole.Link, new() { Name = "Specialties" });
 
-        protected override string GetEndpoint()
+        public async Task<MenuBar> NavigateToMainPage()
         {
-            return END_POINT;
+            await _page.GotoAsync(FullUrl);
+            _logger.Information($"Navigated to {FullUrl}");
+
+            return this;
         }
 
-        public async Task ClickHomeButton()
+        public async Task ClickHomeLink()
         {
-            await _homeButton.ClickAsync();
+            await _homeLink.ClickAsync();
 
             _logger.Information("Home Page is open.");
         }
@@ -37,18 +41,18 @@ namespace PetClinicTests.Pages
             await _ownersDropDown.ClickAsync();
         }
 
-        public async Task ClickOwnersSearchButton()
+        public async Task ClickOwnersSearchLink()
         {
             await OpenOwnersDropDown();
-            await _ownersSearchButton.ClickAsync();
+            await _ownersSearchLink.ClickAsync();
 
             _logger.Information("Owners Page is open.");
         }
 
-        public async Task ClickOwnersAddButton()
+        public async Task ClickOwnersAddLink()
         {
             await OpenOwnersDropDown();
-            await _ownersAddButton.ClickAsync();
+            await _ownersAddLink.ClickAsync();
 
             _logger.Information("Add New Owner Page is open.");
         }
@@ -58,32 +62,32 @@ namespace PetClinicTests.Pages
             await _veterinariansDropDown.ClickAsync();
         }
 
-        public async Task ClickVeterinariansAllButton()
+        public async Task ClickVeterinariansAllLink()
         {
             await OpenVeterinariansDropDown();
-            await _veterinariansAllButton.ClickAsync();
+            await _veterinariansAllLink.ClickAsync();
 
             _logger.Information("Veterinarians Page is open.");
         }
 
-        public async Task ClickVeterinariansAddButton()
+        public async Task ClickVeterinariansAddLink()
         {
             await OpenVeterinariansDropDown();
-            await _veterinariansAddButton.ClickAsync();
+            await _veterinariansAddLink.ClickAsync();
 
             _logger.Information("Add New Veterinarian Page is open.");
         }
 
-        public async Task ClickPetTypesButton()
+        public async Task ClickPetTypesLink()
         {
-            await _petTypesButton.ClickAsync();
+            await _petTypesLink.ClickAsync();
 
             _logger.Information("Pet Types Page is open.");
         }
 
-        public async Task ClickSpecialtiesButton()
+        public async Task ClickSpecialtiesLink()
         {
-            await _specialtiesButton.ClickAsync();
+            await _specialtiesLink.ClickAsync();
 
             _logger.Information("Specialties Page is open.");
         }

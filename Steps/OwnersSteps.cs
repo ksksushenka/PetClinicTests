@@ -19,12 +19,12 @@ namespace PetClinicTests.Steps
 
         }
 
-        public async Task AddNewOwner(string firstName, string lastName, string address, string city, string phone)
-        {
-            await HomePage.NavigateToHomePage();
-            await MenuBar.ClickOwnersSearchButton();
-            await OwnersPage.ClickAddNewOwnerButton();
-            await OwnersAddPage.CreateOwner(firstName, lastName, address, city, phone);
-        }
+        //public async Task AddNewOwner(string firstName, string lastName, string address, string city, string phone)
+        //{
+        //    await HomePage.NavigateToHomePage();
+        //    await MenuBar.ClickOwnersSearchLink();
+        //    await OwnersPage.ClickAddNewOwnerButton();
+        //    await OwnersAddPage.CreateNewOwner(firstName, lastName, address, city, phone);
+        //}
     }
 }

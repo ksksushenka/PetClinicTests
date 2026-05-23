@@ -1,6 +1,5 @@
 ﻿using FluentAssertions;
 using FluentAssertions.Execution;
-using PetClinicTests.Models.Petclinic;
 using PetClinicTests.Pages;
 using PetClinicTests.Services.API;
 using PetClinicTests.Services.DataBases;
@@ -10,7 +9,7 @@ namespace PetClinicTests.Tests.UI
 {
     public class OwnersTests : BaseTest
     {
-        private OwnersSteps OwnersSteps;
+        private OwnersAddPage OwnersAddPage;
         private OwnersDBService _ownersDBService;
         private OwnersService _ownersService;
 
@@ -19,7 +18,7 @@ namespace PetClinicTests.Tests.UI
         [SetUp]
         public async Task InitializationOwners()
         {
-            OwnersSteps = new OwnersSteps(Page);
+            OwnersAddPage = new OwnersAddPage(Page);
             _ownersDBService = new OwnersDBService(_petClinicDBConnector);
             _ownersService = new OwnersService(Playwright);
         }
@@ -34,7 +33,7 @@ namespace PetClinicTests.Tests.UI
             var phone = "1234567890";
 
             //Create a new owner
-            await OwnersSteps.AddNewOwner(firstName, lastName, address, city, phone);
+            await OwnersAddPage.CreateNewOwner(firstName, lastName, address, city, phone);
 
             addedOwnerId = _ownersDBService.GetLastAddedOwner().Id;
 
@@ -55,10 +54,7 @@ namespace PetClinicTests.Tests.UI
         [TearDown]
         public async Task DeleteCreatedOwnerAfterTest()
         {
-            if (addedOwnerId != null)
-            {
-                await _ownersService.DeleteOwnerAsync(addedOwnerId);
-            }
+            await _ownersService.DeleteOwnerAsync(addedOwnerId);
         }
     }
 }

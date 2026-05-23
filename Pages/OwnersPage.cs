@@ -1,4 +1,5 @@
-﻿using Microsoft.Playwright;
+﻿using FluentAssertions;
+using Microsoft.Playwright;
 using PetClinicTests.Common.Configuration;
 using Serilog;
 
@@ -8,7 +9,8 @@ namespace PetClinicTests.Pages
     {
         private static readonly ILogger _logger = LogManager.CreateLogger();
 
-        public OwnersPage(IPage page) : base(page) => END_POINT = "owners";
+        public OwnersPage(IPage page) : base(page) { }
+        protected override string Endpoint => "owners";
 
         private ILocator _ownersText => _page.GetByRole(AriaRole.Heading, new() { Name = "Owners" });
         private ILocator _addNewOwnerButton => _page.GetByRole(AriaRole.Button, new() { Name = "Add Owner" });
@@ -16,15 +18,10 @@ namespace PetClinicTests.Pages
         private ILocator _findOwnerButton => _page.GetByRole(AriaRole.Button, new() { Name = "Find Owner" });
         private ILocator _ownerFullNameLink(string ownerName) => _page.GetByRole(AriaRole.Link, new() { Name = ownerName });
 
-        protected override string GetEndpoint()
-        {
-            return END_POINT;
-        }
-
         public async Task<OwnersPage> NavigateToOwnersPage()
         {
-            await _page.GotoAsync(Environment.GetEnvironmentVariable("URL") + GetEndpoint());
-            _logger.Information($"Navigated to {Environment.GetEnvironmentVariable("URL") + GetEndpoint()}");
+            await _page.GotoAsync(FullUrl);
+            _logger.Information($"Navigated to {FullUrl}");
 
             await _ownersText.WaitForAsync();
 
@@ -52,6 +49,14 @@ namespace PetClinicTests.Pages
             await _addNewOwnerButton.ClickAsync();
 
             _logger.Information("Add New Owner Page is open.");
+        }
+
+        public async Task IsOpen()
+        {
+            _page.Url.Should().Be(FullUrl);
+            
+            var text = await _ownersText.TextContentAsync();
+            text.Should().Be("Owners");
         }
     }
 }
