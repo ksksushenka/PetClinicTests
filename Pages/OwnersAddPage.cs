@@ -1,5 +1,4 @@
 ﻿using Microsoft.Playwright;
-using PetClinicTests.Common;
 using PetClinicTests.Common.Configuration;
 using Serilog;
 
@@ -38,7 +37,6 @@ namespace PetClinicTests.Pages
         // Methods
         public async Task CreateOwner(string firstName, string lastName, string address, string city, string phone)
         {
-            await NavigateToOwnersAddPage();
             await _firstNameField.FillAsync(firstName);
             await _lastNameField.FillAsync(lastName);
             await _addressField.FillAsync(address);

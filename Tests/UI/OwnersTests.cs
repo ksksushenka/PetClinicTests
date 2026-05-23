@@ -4,12 +4,13 @@ using PetClinicTests.Models.Petclinic;
 using PetClinicTests.Pages;
 using PetClinicTests.Services.API;
 using PetClinicTests.Services.DataBases;
+using PetClinicTests.Steps;
 
 namespace PetClinicTests.Tests.UI
 {
     public class OwnersTests : BaseTest
     {
-        private OwnersAddPage OwnersAddPage;
+        private OwnersSteps OwnersSteps;
         private OwnersDBService _ownersDBService;
         private OwnersService _ownersService;
 
@@ -18,7 +19,7 @@ namespace PetClinicTests.Tests.UI
         [SetUp]
         public async Task InitializationOwners()
         {
-            OwnersAddPage = new OwnersAddPage(Page);
+            OwnersSteps = new OwnersSteps(Page);
             _ownersDBService = new OwnersDBService(_petClinicDBConnector);
             _ownersService = new OwnersService(Playwright);
         }
@@ -33,7 +34,7 @@ namespace PetClinicTests.Tests.UI
             var phone = "1234567890";
 
             //Create a new owner
-            await OwnersAddPage.CreateOwner(firstName, lastName, address, city, phone);
+            await OwnersSteps.AddNewOwner(firstName, lastName, address, city, phone);
 
             addedOwnerId = _ownersDBService.GetLastAddedOwner().Id;
 
