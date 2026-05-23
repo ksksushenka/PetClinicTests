@@ -1,0 +1,64 @@
+﻿using FluentAssertions;
+using FluentAssertions.Execution;
+using PetClinicTests.Models.Petclinic;
+using PetClinicTests.Pages;
+using PetClinicTests.Services.API;
+using PetClinicTests.Services.DataBases;
+using PetClinicTests.Steps;
+
+namespace PetClinicTests.Tests.UI
+{
+    public class OwnersTests : BaseTest
+    {
+        private OwnersSteps OwnersSteps;
+        private OwnersDBService _ownersDBService;
+        private OwnersService _ownersService;
+
+        private int addedOwnerId;
+
+        [SetUp]
+        public async Task InitializationOwners()
+        {
+            OwnersSteps = new OwnersSteps(Page);
+            _ownersDBService = new OwnersDBService(_petClinicDBConnector);
+            _ownersService = new OwnersService(Playwright);
+        }
+
+        [Test]
+        public async Task CreateNewOwner()
+        {
+            var firstName = "Kseniya";
+            var lastName = "Test";
+            var address = "Test address 123";
+            var city = "Minsk";
+            var phone = "1234567890";
+
+            //Create a new owner
+            await OwnersSteps.AddNewOwner(firstName, lastName, address, city, phone);
+
+            addedOwnerId = _ownersDBService.GetLastAddedOwner().Id;
+
+            var actualAddedOwner = await _ownersService.GetOwnerAsync(addedOwnerId);
+
+            //Assertion
+            using (new AssertionScope())
+            {
+                actualAddedOwner.Should().NotBeNull();
+                actualAddedOwner.FirstName.Should().Be(firstName);
+                actualAddedOwner.LastName.Should().Be(lastName);
+                actualAddedOwner.Address.Should().Be(address);
+                actualAddedOwner.City.Should().Be(city);
+                actualAddedOwner.Telephone.Should().Be(phone);
+            }
+        }
+
+        [TearDown]
+        public async Task DeleteCreatedOwnerAfterTest()
+        {
+            if (addedOwnerId != null)
+            {
+                await _ownersService.DeleteOwnerAsync(addedOwnerId);
+            }
+        }
+    }
+}

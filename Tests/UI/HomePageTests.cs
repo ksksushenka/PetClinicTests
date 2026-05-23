@@ -1,27 +1,26 @@
 ﻿using FluentAssertions;
 using FluentAssertions.Execution;
-using PetClinicTests.Steps;
+using PetClinicTests.Common.DBConnector;
+using PetClinicTests.Pages;
 
 namespace PetClinicTests.Tests.UI
 {
     public class HomePageTests : BaseTest
     {
-        private HomeSteps HomeSteps;
-
         private string? firstText;
         private string? secondText;
 
         [SetUp]
-        public void InitHomeSteps()
+        public async Task InitializationHomePage()
         {
-            HomeSteps = new HomeSteps(Page);
+            HomePage = new HomePage(Page);
         }
 
         [Test]
         public async Task VerifyOpeningHomePage()
         {
             //Open Home Page
-            await HomeSteps.OpenHomePage();
+            await HomePage.NavigateToHomePage();
 
             firstText = await HomePage.GetWelcomeToPetclinicText();
             secondText = await HomePage.GetWelcomeText();

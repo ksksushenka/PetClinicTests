@@ -45,7 +45,6 @@ namespace PetClinicTests.Tests
             _petClinicDBConnector = new PetClinicDBConnector();
 
             //Init Pages and Services
-            HomePage = new HomePage(Page);
         }
 
         [TearDown]
