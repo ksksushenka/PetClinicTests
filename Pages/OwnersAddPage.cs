@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using Microsoft.Playwright;
 using PetClinicTests.Common.Configuration;
+using PetClinicTests.Models.Petclinic;
 using Serilog;
 
 namespace PetClinicTests.Pages
@@ -32,14 +33,14 @@ namespace PetClinicTests.Pages
         }
 
         // Methods
-        public async Task CreateNewOwner(string firstName, string lastName, string address, string city, string phone)
+        public async Task CreateNewOwner(Owner owner)
         {
             await NavigateToOwnersAddPage();
-            await _firstNameField.FillAsync(firstName);
-            await _lastNameField.FillAsync(lastName);
-            await _addressField.FillAsync(address);
-            await _cityField.FillAsync(city);
-            await _telephoneField.FillAsync(phone);
+            await _firstNameField.FillAsync(owner.FirstName);
+            await _lastNameField.FillAsync(owner.LastName);
+            await _addressField.FillAsync(owner.Address);
+            await _cityField.FillAsync(owner.City);
+            await _telephoneField.FillAsync(owner.Telephone);
             await _addOwnerButton.ClickAsync();
 
             _logger.Information("Owner is created.");

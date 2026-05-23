@@ -7,15 +7,15 @@ namespace PetClinicTests.Models.Petclinic
         [JsonPropertyName("id")]
         public int Id { get; set; }
         [JsonPropertyName("firstName")]
-        public string? FirstName { get; set; }
+        public required string FirstName { get; set; }
         [JsonPropertyName("lastName")]
-        public string? LastName { get; set; }
+        public required string LastName { get; set; }
         [JsonPropertyName("address")]
-        public string? Address { get; set; }
+        public required string Address { get; set; }
         [JsonPropertyName("city")]
-        public string? City { get; set; }
+        public required string City { get; set; }
         [JsonPropertyName("telephone")]
-        public string? Telephone { get; set; }
+        public required string Telephone { get; set; }
         [JsonPropertyName("pets")]
         public List<Pet>? Pets { get; set; }
     }

@@ -17,7 +17,7 @@ namespace PetClinicTests.Services.DataBases
             _dbConnector = dbConnector;
         }
 
-        public OwnersTable? GetLastAddedOwner()
+        public OwnersTable GetLastAddedOwner()
         {
             var owner = _dbConnector.OwnersTable.OrderByDescending(p => p.Id).First();
             _logger.Information($"Last owner Id is {owner.Id} in DB");
