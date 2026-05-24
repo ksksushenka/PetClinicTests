@@ -1,6 +1,13 @@
 pipeline {
     agent any
 
+    environment {
+    URL = 'http://localhost:4200/petclinic/'
+    PetclinicAPI = 'http://localhost:9966/petclinic/'
+    PetClinic = 'Host=localhost;Port=5433;Database=petclinic;username=petclinic;password=petclinic'
+    HEADLESS = 'true'
+}
+
     stages {
 
         stage('Checkout') {
@@ -23,20 +30,20 @@ pipeline {
 
         stage('Install Playwright Browsers') {
             steps {
-                bat 'pwsh bin/Debug/net10.0/playwright.ps1 install'
+                bat 'powershell -ExecutionPolicy Bypass -File bin/Debug/net10.0/playwright.ps1 install'
             }
         }
 
         stage('Run Tests') {
             steps {
-                bat 'dotnet test --logger "trx;LogFileName=testResults.trx"'
+                bat 'dotnet test --logger:nunit'
             }
         }
     }
 
     post {
         always {
-            junit '**/*.trx'
+            nunit '**/*.xml'
         }
     }
 }
