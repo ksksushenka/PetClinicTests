@@ -67,5 +67,12 @@ namespace PetClinicTests.Tests
             Page.CloseAsync();
             _petClinicDBConnector.Dispose();
         }
+
+        [TearDown]
+        public void AllureTearDown()
+        {
+            AllureLifecycle.Instance.StopTestCase();
+            AllureLifecycle.Instance.WriteTestCase();
+        }
     }
 }
