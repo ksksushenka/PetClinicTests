@@ -18,7 +18,7 @@
 			<!-- For debugging selectors, it's recommend to set the following environment variable -->
 			<DEBUG>pw:api</DEBUG>
 			<Env>Local</Env>
-			<URL>http://localhost:4200/petclinic/</URL>
+			<PetclinicURL>http://localhost:4200/petclinic/</PetclinicURL>
 			<PetclinicAPI>http://localhost:9966/petclinic/</PetclinicAPI>
 			<PetClinic>Host=localhost;Port=5433;Database=petclinic;username=petclinic;password=petclinic</PetClinic>
 		</EnvironmentVariables>

@@ -12,7 +12,7 @@ namespace PetClinicTests.Pages
 
         protected abstract string Endpoint { get; }
 
-        protected string BaseUrl => Environment.GetEnvironmentVariable("URL")!;
+        protected string BaseUrl => Environment.GetEnvironmentVariable("PetclinicURL")!;
 
         protected string FullUrl => BaseUrl + Endpoint;
 
