@@ -87,6 +87,7 @@ namespace PetClinicTests.Pages
 
         public async Task<string?> GetOwnerFullName()
         {
+            await _ownerFullNameText.WaitForAsync();
             return await _ownerFullNameText.TextContentAsync();
         }
 
