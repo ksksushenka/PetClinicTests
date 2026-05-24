@@ -1,25 +1,32 @@
 ﻿using FluentAssertions;
 using FluentAssertions.Execution;
+using PetClinicTests.Helpers;
 using PetClinicTests.Models.Petclinic;
 using PetClinicTests.Pages;
 using PetClinicTests.Services.API;
 using PetClinicTests.Services.DataBases;
-using PetClinicTests.Steps;
 
 namespace PetClinicTests.Tests.UI
 {
     public class OwnersTests : BaseTest
     {
-        private OwnersSteps OwnersSteps;
+        private OwnersAddPage OwnersAddPage;
+        private OwnerInformationPage OwnerInformationPage;
+        private OwnersEditPage OwnersEditPage;
+        private OwnersPage OwnersPage;
         private OwnersDBService _ownersDBService;
         private OwnersService _ownersService;
 
-        private int addedOwnerId;
+        private Owner? newOwner;
+        private Owner? updatedOwner;
 
         [SetUp]
         public async Task InitializationOwners()
         {
-            OwnersSteps = new OwnersSteps(Page);
+            OwnersAddPage = new OwnersAddPage(Page);
+            OwnerInformationPage = new OwnerInformationPage(Page);
+            OwnersEditPage = new OwnersEditPage(Page);
+            OwnersPage = new OwnersPage(Page);
             _ownersDBService = new OwnersDBService(_petClinicDBConnector);
             _ownersService = new OwnersService(Playwright);
         }
@@ -27,37 +34,67 @@ namespace PetClinicTests.Tests.UI
         [Test]
         public async Task CreateNewOwner()
         {
-            var firstName = "Kseniya";
-            var lastName = "Test";
-            var address = "Test address 123";
-            var city = "Minsk";
-            var phone = "1234567890";
+            newOwner = OwnerCreateFactory.GetNewOwner();
 
             //Create a new owner
-            await OwnersSteps.AddNewOwner(firstName, lastName, address, city, phone);
+            await OwnersAddPage.CreateNewOwner(newOwner);
 
-            addedOwnerId = _ownersDBService.GetLastAddedOwner().Id;
+            newOwner.Id = _ownersDBService.GetLastAddedOwner().Id;
 
-            var actualAddedOwner = await _ownersService.GetOwnerAsync(addedOwnerId);
+            var actualAddedOwner = await _ownersService.GetOwnerAsync(newOwner.Id);
 
             //Assertion
             using (new AssertionScope())
             {
                 actualAddedOwner.Should().NotBeNull();
-                actualAddedOwner.FirstName.Should().Be(firstName);
-                actualAddedOwner.LastName.Should().Be(lastName);
-                actualAddedOwner.Address.Should().Be(address);
-                actualAddedOwner.City.Should().Be(city);
-                actualAddedOwner.Telephone.Should().Be(phone);
+                actualAddedOwner.FirstName.Should().Be(newOwner.FirstName);
+                actualAddedOwner.LastName.Should().Be(newOwner.LastName);
+                actualAddedOwner.Address.Should().Be(newOwner.Address);
+                actualAddedOwner.City.Should().Be(newOwner.City);
+                actualAddedOwner.Telephone.Should().Be(newOwner.Telephone);
+            }
+        }
+
+        [Test]
+        public async Task UpdateOwner()
+        {         
+            newOwner = OwnerCreateFactory.GetNewOwner();
+
+            //Create a new owner
+            await OwnersAddPage.CreateNewOwner(newOwner);
+
+            newOwner.Id = _ownersDBService.GetLastAddedOwner().Id;
+            var ownerFullname = $"{newOwner.FirstName} {newOwner.LastName}";
+
+            //Find created owner
+            await OwnersPage.FindOwnerbyLastName(newOwner.LastName);
+            await OwnersPage.ClickOnOwner(ownerFullname);
+            await OwnerInformationPage.ClickEditOwnerButton();
+
+            //Update Owner
+            updatedOwner = OwnerCreateFactory.GetUpdatedOwner();
+            await OwnersEditPage.EditOwner(updatedOwner);
+
+            var actualUpdatedOwner = await _ownersService.GetOwnerAsync(newOwner.Id);
+
+            //Assertion
+            using (new AssertionScope())
+            {
+                actualUpdatedOwner.Should().NotBeNull();
+                actualUpdatedOwner.FirstName.Should().Be(updatedOwner.FirstName);
+                actualUpdatedOwner.LastName.Should().Be(updatedOwner.LastName);
+                actualUpdatedOwner.Address.Should().Be(updatedOwner.Address);
+                actualUpdatedOwner.City.Should().Be(updatedOwner.City);
+                actualUpdatedOwner.Telephone.Should().Be(updatedOwner.Telephone);
             }
         }
 
         [TearDown]
         public async Task DeleteCreatedOwnerAfterTest()
         {
-            if (addedOwnerId != null)
+            if (newOwner != null)
             {
-                await _ownersService.DeleteOwnerAsync(addedOwnerId);
+                await _ownersService.DeleteOwnerAsync(newOwner.Id);
             }
         }
     }

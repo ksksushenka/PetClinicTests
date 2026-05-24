@@ -10,12 +10,15 @@ namespace PetClinicTests.Pages
 
         public BasePage(IPage page) => _page = page;
 
-        protected abstract string GetEndpoint();
+        protected abstract string Endpoint { get; }
+
+        protected string BaseUrl => Environment.GetEnvironmentVariable("URL")!;
+
+        protected string FullUrl => BaseUrl + Endpoint;
 
         public async Task GotoAsync()
         {
-            url = Environment.GetEnvironmentVariable("URL");
-            await _page.GotoAsync(url + GetEndpoint());
+            await _page.GotoAsync(FullUrl);
         }
     }
 }

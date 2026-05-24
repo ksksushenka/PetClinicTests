@@ -6,43 +6,33 @@ using Serilog;
 
 namespace PetClinicTests.Pages
 {
-    public class OwnersAddPage: BasePage
+    public class OwnersEditPage: BasePage
     {
         private static readonly ILogger _logger = LogManager.CreateLogger();
+        private readonly int ownerId;
 
-        public OwnersAddPage(IPage page) : base(page) { }
-        protected override string Endpoint => "owners/add";
+        public OwnersEditPage(IPage page) : base(page) { }
+        protected override string Endpoint => $"owners/{ownerId}/edit";
 
-        private ILocator _newOwnerText => _page.GetByRole(AriaRole.Heading, new() { Name = "New Owner" });
+        private ILocator _newOwnerText => _page.GetByRole(AriaRole.Heading, new() { Name = "Edit Owner" });
         private ILocator _firstNameField => _page.GetByRole(AriaRole.Textbox, new () {Name = "First Name"});
         private ILocator _lastNameField => _page.GetByRole(AriaRole.Textbox, new() {Name = "Last Name"});
         private ILocator _addressField => _page.GetByRole(AriaRole.Textbox, new() {Name = "Address" });
         private ILocator _cityField => _page.GetByRole(AriaRole.Textbox, new() { Name = "City" });
         private ILocator _telephoneField => _page.GetByRole(AriaRole.Textbox, new() { Name = "Telephone" });
-        private ILocator _addOwnerButton => _page.GetByRole(AriaRole.Button, new() { Name = "Add Owner" });
-
-        public async Task<OwnersAddPage> NavigateToOwnersAddPage()
-        {
-            await _page.GotoAsync(FullUrl);
-            _logger.Information($"Navigated to {FullUrl}");
-
-            await _newOwnerText.WaitForAsync();
-
-            return this;
-        }
+        private ILocator _updateOwnerButton => _page.GetByRole(AriaRole.Button, new() { Name = "Update Owner" });
 
         // Methods
-        public async Task CreateNewOwner(Owner owner)
+        public async Task EditOwner(Owner owner)
         {
-            await NavigateToOwnersAddPage();
             await _firstNameField.FillAsync(owner.FirstName);
             await _lastNameField.FillAsync(owner.LastName);
             await _addressField.FillAsync(owner.Address);
             await _cityField.FillAsync(owner.City);
             await _telephoneField.FillAsync(owner.Telephone);
-            await _addOwnerButton.ClickAsync();
+            await _updateOwnerButton.ClickAsync();
 
-            _logger.Information("Owner is created.");
+            _logger.Information("Owner is updated.");
         }
 
         public async Task IsOpen()
