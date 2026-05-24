@@ -1,5 +1,6 @@
 ﻿using Microsoft.Playwright;
 using PetClinicTests.Common.DBConnector;
+using Allure.Net.Commons;
 
 namespace PetClinicTests.Tests
 {
@@ -36,6 +37,8 @@ namespace PetClinicTests.Tests
         [SetUp]
         public async Task Initialization()
         {
+            AllureLifecycle.Instance.CleanupResultDirectory();
+
             Page.SetDefaultTimeout(60000);
 
             //Init DB connector
