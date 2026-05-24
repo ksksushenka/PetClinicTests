@@ -37,9 +37,7 @@ namespace PetClinicTests.Tests.UI
             newOwner = OwnerCreateFactory.GetNewOwner();
 
             //Create a new owner
-            await OwnersAddPage.CreateNewOwner(newOwner);
-
-            newOwner.Id = _ownersDBService.GetLastAddedOwner().Id;
+            newOwner = await OwnersAddPage.CreateNewOwner(newOwner);
 
             var actualAddedOwner = await _ownersService.GetOwnerAsync(newOwner.Id);
 
@@ -61,9 +59,8 @@ namespace PetClinicTests.Tests.UI
             newOwner = OwnerCreateFactory.GetNewOwner();
 
             //Create a new owner
-            await OwnersAddPage.CreateNewOwner(newOwner);
+            newOwner = await OwnersAddPage.CreateNewOwner(newOwner);
 
-            newOwner.Id = _ownersDBService.GetLastAddedOwner().Id;
             var ownerFullname = $"{newOwner.FirstName} {newOwner.LastName}";
 
             //Find created owner
