@@ -37,9 +37,9 @@ namespace PetClinicTests.Pages
             _logger.Information("Owner search.");
         }
 
-        public async Task ClickOnOwner(string ownerName)
+        public async Task ClickOnOwner(string ownerFullName)
         {
-            await _ownerFullNameLink(ownerName).ClickAsync();
+            await _ownerFullNameLink(ownerFullName).ClickAsync();
 
             _logger.Information("Owner Information Page is open.");
         }

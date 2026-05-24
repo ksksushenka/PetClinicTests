@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using FluentAssertions.Execution;
 using Microsoft.Playwright;
 using PetClinicTests.Common.Configuration;
 using Serilog;
@@ -34,9 +35,12 @@ namespace PetClinicTests.Pages
             var text2 = await _welcomeText.TextContentAsync();
             var imageIsVisible = await _welcomeImage.IsVisibleAsync();
 
-            text1.Should().Be("Welcome to Petclinic");
-            text2.Should().Be("Welcome");
-            imageIsVisible.Should().BeTrue();
+            using (new AssertionScope())
+            {
+                text1.Should().Be("Welcome to Petclinic");
+                text2.Should().Be("Welcome");
+                imageIsVisible.Should().BeTrue();
+            }
         }
     }
 }
