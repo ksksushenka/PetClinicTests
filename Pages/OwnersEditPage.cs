@@ -30,7 +30,17 @@ namespace PetClinicTests.Pages
             await _addressField.FillAsync(owner.Address);
             await _cityField.FillAsync(owner.City);
             await _telephoneField.FillAsync(owner.Telephone);
+
+            var responseTask = _page.WaitForResponseAsync(response =>
+                response.Url.Contains("/api/owners/") &&
+                response.Request.Method == "PUT"
+            );
+
             await _updateOwnerButton.ClickAsync();
+
+            var response = await responseTask;
+
+            response.Ok.Should().BeTrue();
 
             _logger.Information("Owner is updated.");
         }
