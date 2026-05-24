@@ -23,7 +23,8 @@ namespace PetClinicTests.Pages
         private ILocator _addVisitButton => _page.GetByRole(AriaRole.Button, new() { Name = "Add Visit" });
         private ILocator _editVisitButton => _page.GetByRole(AriaRole.Button, new() { Name = "Edit Visit" });
         private ILocator _deleteVisitButton => _page.GetByRole(AriaRole.Button, new() { Name = "Delete Visit" });
-
+        private ILocator _ownerFullNameText => _page.Locator(".ownerFullName");
+            
         public async Task<OwnerInformationPage> NavigateToOwnerInformationPage(int id)
         {
             await _page.GotoAsync(FullUrl + id);
@@ -82,6 +83,11 @@ namespace PetClinicTests.Pages
             await _deleteVisitButton.ClickAsync();
 
             _logger.Information("Visit is deleted.");
+        }
+
+        public async Task<string?> GetOwnerFullName()
+        {
+            return await _ownerFullNameText.TextContentAsync();
         }
 
         public async Task IsOpen()
