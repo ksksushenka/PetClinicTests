@@ -23,26 +23,16 @@ namespace PetClinicTests.Pages
         private ILocator _updateOwnerButton => _page.GetByRole(AriaRole.Button, new() { Name = "Update Owner" });
 
         // Methods
-        public async Task EditOwner(Owner owner)
+        public async Task UpdateOwner(Owner owner)
         {
             await _firstNameField.FillAsync(owner.FirstName);
             await _lastNameField.FillAsync(owner.LastName);
             await _addressField.FillAsync(owner.Address);
             await _cityField.FillAsync(owner.City);
             await _telephoneField.FillAsync(owner.Telephone);
-
-            var responseTask = _page.WaitForResponseAsync(response =>
-                response.Url.Contains("/api/owners/") &&
-                response.Request.Method == "PUT"
-            );
-
             await _updateOwnerButton.ClickAsync();
 
-            var response = await responseTask;
-
-            response.Ok.Should().BeTrue();
-
-            _logger.Information("Owner is updated.");
+            _logger.Information($"Owner with ID = {owner.Id} is updated.");
         }
 
         public async Task IsOpen()

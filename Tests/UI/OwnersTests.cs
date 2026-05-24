@@ -71,11 +71,17 @@ namespace PetClinicTests.Tests.UI
 
             //Update Owner
             updatedOwner = OwnerCreateFactory.GetUpdatedOwner();
-            await OwnersEditPage.EditOwner(updatedOwner);
+            await OwnersEditPage.UpdateOwner(updatedOwner);
+
+            var actualUpdatedOwnerFullName = await OwnerInformationPage.GetOwnerFullName();
+            var expectedUpdatedOwnerFullName = $"{updatedOwner.FirstName} {updatedOwner.LastName}";
+
+            //UI Assertion
+            actualUpdatedOwnerFullName.Should().Be(expectedUpdatedOwnerFullName);
 
             var actualUpdatedOwner = await _ownersService.GetOwnerAsync(newOwner.Id);
 
-            //Assertion
+            //API Assertion
             using (new AssertionScope())
             {
                 actualUpdatedOwner.Should().NotBeNull();

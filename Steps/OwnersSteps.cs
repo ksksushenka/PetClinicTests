@@ -1,5 +1,6 @@
 ﻿using Microsoft.Playwright;
 using PetClinicTests.Common.Configuration;
+using PetClinicTests.Models.Petclinic;
 using PetClinicTests.Pages;
 using Serilog;
 
@@ -13,6 +14,8 @@ namespace PetClinicTests.Steps
         private MenuBar MenuBar => new MenuBar(_page);
         private OwnersPage OwnersPage => new OwnersPage(_page);
         private OwnersAddPage OwnersAddPage => new OwnersAddPage(_page);
+        private OwnersEditPage OwnersEditPage => new OwnersEditPage(_page);
+        private OwnerInformationPage OwnerInformationPage => new OwnerInformationPage(_page);
 
         public OwnersSteps(IPage page) : base(page)
         {
