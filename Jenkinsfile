@@ -46,7 +46,7 @@ pipeline {
             nunit testResultsPattern: 'TestResults/*.xml'
 
             allure([
-            results: [[path: 'allure-results']]
+            results: [[path: 'bin/Debug/net10.0/allure-results']]
         ])
         }
     }
