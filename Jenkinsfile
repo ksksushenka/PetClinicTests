@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-    URL = 'http://localhost:4200/petclinic/'
+    PetclinicURL = 'http://localhost:4200/petclinic/'
     PetclinicAPI = 'http://localhost:9966/petclinic/'
     PetClinic = 'Host=localhost;Port=5433;Database=petclinic;username=petclinic;password=petclinic'
     HEADLESS = 'true'
