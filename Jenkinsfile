@@ -43,7 +43,7 @@ pipeline {
 
     post {
         always {
-            nunit '**/*.xml'
+            nunit testResultsPattern: '**/*.xml'
         }
     }
 }
