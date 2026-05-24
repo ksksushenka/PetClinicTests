@@ -8,6 +8,7 @@ using PetClinicTests.Services.DataBases;
 
 namespace PetClinicTests.Tests.UI
 {
+    [AllureNUnit]
     public class OwnersTests : BaseTest
     {
         private OwnersAddPage OwnersAddPage;
