@@ -36,14 +36,14 @@ pipeline {
 
         stage('Run Tests') {
             steps {
-                bat 'dotnet test --logger:nunit'
+                bat 'dotnet test --logger:nunit --results-directory TestResults'
             }
         }
     }
 
     post {
         always {
-            nunit testResultsPattern: '**/*.xml'
+            nunit testResultsPattern: 'TestResults/*.xml'
         }
     }
 }
