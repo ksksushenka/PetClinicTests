@@ -37,8 +37,6 @@ namespace PetClinicTests.Tests
         [SetUp]
         public async Task Initialization()
         {
-            AllureLifecycle.Instance.CleanupResultDirectory();
-
             Page.SetDefaultTimeout(60000);
 
             //Init DB connector
@@ -66,13 +64,6 @@ namespace PetClinicTests.Tests
             //Close browser
             Page.CloseAsync();
             _petClinicDBConnector.Dispose();
-        }
-
-        [TearDown]
-        public void AllureTearDown()
-        {
-            AllureLifecycle.Instance.StopTestCase();
-            AllureLifecycle.Instance.WriteTestCase();
         }
     }
 }
