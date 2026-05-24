@@ -39,19 +39,15 @@ pipeline {
                 bat 'dotnet test --logger:nunit --results-directory TestResults'
             }
         }
-
-        stage('Allure Report') {
-            steps {
-                allure([
-                    results: [[path: 'allure-results']]
-                ])
-            }
-        }
     }
 
     post {
         always {
             nunit testResultsPattern: 'TestResults/*.xml'
+
+            allure([
+            results: [[path: 'allure-results']]
+        ])
         }
     }
 }
