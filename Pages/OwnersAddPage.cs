@@ -3,6 +3,7 @@ using Microsoft.Playwright;
 using PetClinicTests.Common.Configuration;
 using PetClinicTests.Models.Petclinic;
 using Serilog;
+using System.Text.Json;
 
 namespace PetClinicTests.Pages
 {
@@ -32,7 +33,7 @@ namespace PetClinicTests.Pages
         }
 
         // Methods
-        public async Task CreateNewOwner(Owner owner)
+        public async Task<Owner> CreateNewOwner(Owner owner)
         {
             await NavigateToOwnersAddPage();
             await _firstNameField.FillAsync(owner.FirstName);
@@ -40,9 +41,24 @@ namespace PetClinicTests.Pages
             await _addressField.FillAsync(owner.Address);
             await _cityField.FillAsync(owner.City);
             await _telephoneField.FillAsync(owner.Telephone);
+
+            var responseTask = _page.WaitForResponseAsync(response =>
+            response.Url.Contains("/api/owners") &&
+            response.Request.Method == "POST");
+
             await _addOwnerButton.ClickAsync();
 
-            _logger.Information("Owner is created.");
+            var response = await responseTask;
+
+            var json = await response.TextAsync();
+
+            var createdOwner = JsonSerializer.Deserialize<Owner>(json);
+
+            owner.Id = createdOwner!.Id;
+
+            _logger.Information($"Owner created with ID {owner.Id}");
+
+            return owner;
         }
 
         public async Task IsOpen()
