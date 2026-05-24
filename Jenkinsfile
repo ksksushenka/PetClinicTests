@@ -2,11 +2,11 @@ pipeline {
     agent any
 
     environment {
-    PetclinicURL = 'http://localhost:4200/petclinic/'
-    PetclinicAPI = 'http://localhost:9966/petclinic/'
-    PetClinic = 'Host=localhost;Port=5433;Database=petclinic;username=petclinic;password=petclinic'
-    HEADLESS = 'true'
-}
+        PetclinicURL = 'http://localhost:4200/petclinic/'
+        PetclinicAPI = 'http://localhost:9966/petclinic/'
+        PetClinic = 'Host=localhost;Port=5433;Database=petclinic;username=petclinic;password=petclinic'
+        HEADLESS = 'true'
+    }
 
     stages {
 
@@ -37,6 +37,14 @@ pipeline {
         stage('Run Tests') {
             steps {
                 bat 'dotnet test --logger:nunit --results-directory TestResults'
+            }
+        }
+
+        stage('Allure Report') {
+            steps {
+                allure([
+                    results: [[path: 'allure-results']]
+                ])
             }
         }
     }

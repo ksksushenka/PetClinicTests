@@ -1,6 +1,5 @@
 ﻿using Microsoft.Playwright;
 using PetClinicTests.Common.DBConnector;
-using PetClinicTests.Pages;
 
 namespace PetClinicTests.Tests
 {

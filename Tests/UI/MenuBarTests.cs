@@ -2,6 +2,7 @@
 
 namespace PetClinicTests.Tests.UI
 {
+    [AllureNUnit]
     public class MenuBarTests : BaseTest
     {
         private MenuBar MenuBar;
